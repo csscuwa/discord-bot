@@ -3,13 +3,6 @@ import discord
 
 import requests
 
-import dotenv
-import os
-
-dotenv.load_dotenv()
-
-password = os.getenv('API_PASSWORD')
-
 
 class Door(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -28,7 +21,7 @@ class Door(commands.Cog):
     @tasks.loop(seconds=5.0)
     async def ping_door_status(self):
         json_data = self._session.get("https://portal.cssc.asn.au/api/door_status").json()
-        door_status = json_data["door_open"]
+        door_status = json_data["door_status"]
 
         # Only send a message if the status has changed.
         if door_status != self.current_door_status:
@@ -46,12 +39,8 @@ class Door(commands.Cog):
 
     @ping_door_status.before_loop
     async def before_ping_door_status(self):
-        print("Logging in...")
-        self._session.post('https://portal.cssc.asn.au/api/auth', data={'password': password})
-        print("Successfully logged in: Welcome my leige")
-
         json_data = self._session.get("https://portal.cssc.asn.au/api/door_status").json()
-        self.current_door_status = json_data["door_open"]
+        self.current_door_status = json_data["door_status"]
 
         await self.update_status()
 
