@@ -21,7 +21,7 @@ class Door(commands.Cog):
     @tasks.loop(seconds=5.0)
     async def ping_door_status(self):
         json_data = self._session.get("https://portal.cssc.asn.au/api/door_status").json()
-        door_status = json_data["door_status"]
+        door_status = int(json_data["door_status"])
 
         # Only send a message if the status has changed.
         if door_status != self.current_door_status:
@@ -41,8 +41,6 @@ class Door(commands.Cog):
     async def before_ping_door_status(self):
         json_data = self._session.get("https://portal.cssc.asn.au/api/door_status").json()
         self.current_door_status = json_data["door_status"]
-
-        await self.update_status()
 
 
 async def setup(bot):
