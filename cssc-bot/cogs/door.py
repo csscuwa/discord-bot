@@ -39,7 +39,7 @@ class Door(commands.Cog):
 
     @ping_door_status.before_loop
     async def before_ping_door_status(self):
-        json_data = self._session.get("https://portal.cssc.asn.au/api/door_status").json()
+        json_data = self._session.get("https://dash.cssc.asn.au/api/door_status").json()
         self.current_door_status = json_data["door_status"]
 
 

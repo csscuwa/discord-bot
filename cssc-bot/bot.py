@@ -19,5 +19,10 @@ async def on_ready():
         activity=discord.Activity(type=discord.ActivityType.watching, name="the CSSC Door"))
     await bot.load_extension('cogs.door')
 
+@bot.event
+async def on_message(message):
+    if message.channel.type == discord.ChannelType.news:
+        await message.publish()
+        return
 
 bot.run(token)
