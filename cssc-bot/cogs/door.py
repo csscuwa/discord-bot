@@ -32,9 +32,10 @@ class Door(commands.Cog):
 
     async def update_status(self):
         if self.current_door_status:
-            await self.door_status_channel.send("Door Open")
+            message = await self.door_status_channel.send("Door Open")
         else:
-            await self.door_status_channel.send("Door Closed")
+            message = await self.door_status_channel.send("Door Closed")
+        await message.publish()
 
 
     @ping_door_status.before_loop
